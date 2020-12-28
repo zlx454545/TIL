@@ -3,12 +3,12 @@ body{
     font-family: 'Open Sans', sans-serif;
 }
 
-.status-bar{
+.status-bar {
     display: flex;
     justify-content: center;
 }
 
-.status-bar__column{
+.status-bar__column {
     width: 33%;
 }
 
