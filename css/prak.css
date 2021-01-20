@@ -1,0 +1,37 @@
+#red-dot{
+    height: 5px;
+    width :5px;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: 20px;
+    background-color: tomato;
+}
+
+.fa-cog{
+    position: relative;
+}
+
+.first-screen{
+    display: flex;
+    justify-content: space-between;
+}
+
+.first-screen__column{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.first-screen__column > span{  
+    text-align: center;
+    margin-top: 15px;
+}
+
+.second-screen{
+    padding-top: 30px;
+}
+
+.second-screen__title{
+    padding: 10px 0px;
+}
