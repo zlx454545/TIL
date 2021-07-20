@@ -465,15 +465,13 @@ Promise.race([
 
 // Promise.allSettled
 
-
-
-PART 1
-1. Create a function 'createImage' which receives imgPath as an input. 
-This function returns a promise which creates a new image (use document.createElement('img')) and sets the 
-.src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, 
-and resolve the promise. The fulfilled value should be the image element itself. 
-In case there is an error loading the image ('error' event), reject the promise.
-*/
+// PART 1
+// 1. Create a function 'createImage' which receives imgPath as an input.
+// This function returns a promise which creates a new image (use document.createElement('img')) and sets the
+// .src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class,
+// and resolve the promise. The fulfilled value should be the image element itself.
+// In case there is an error loading the image ('error' event), reject the promise.
+// */
 
 const imgContainer = document.querySelector('.images');
 
@@ -644,3 +642,4 @@ Promise.race([
   .then(res => console.log(res[0]))
   .catch(err => console.log(err));
 
+// 왜 안됨..
