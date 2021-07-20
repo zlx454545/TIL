@@ -1,6 +1,9 @@
 'use strict';
 
 const btn = document.querySelector('.btn-country');
+if (btn.id !== null) {
+  console.log(btn.id);
+}
 const countriesContainer = document.querySelector('.countries');
 
 ///////////////////////////////////////
@@ -223,32 +226,172 @@ const getJSON = function (url, errorMsg = 'Something went wrong') {
 
 // lottery.then(res => console.log(res)).catch(err => console.error(err));
 
-// Promisifying setTimeout
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
+// const lottery = new Promise(function (resolve, reject) {
+//   if (Math.random() >= 0.5) {
+//     resolve();
+//   }
+// });
+
+// // Promisifying setTimeout
+
+// wait(2)
+//   .then(() => {
+//     console.log('I waited for 2 seconds');
+//     return wait(1);
+//   })
+//   .then(() => console.log('I waited for 1 second'));
+
+// Promise.resolve('abc').then(x => console.log(x));
+
+// const getPosition = function () {
+//   return new Promise(function (resolve, reject) {
+//     // navigator.geolocation.getCurrentPosition(
+//     //   position => resolve(position),
+//     //   err => reject(err)
+//     // );
+//     navigator.geolocation.getCurrentPosition(resolve, reject);
+//   });
+// };
+
+// const whereAmI = function () {
+//   getPosition()
+//     .then(pos => {
+//       const { latitude: lat, longitude: lng } = pos.coords;
+//       return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//     })
+
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Problem with geocoding ${res.status}`);
+//       return res.json();
+//     })
+//     .then(data => {
+//       console.log(data);
+//       console.log(`You are in ${data.city}, ${data.country}`);
+
+//       return fetch(`https://restcountries.eu/rest/v2/name/${data.country}`);
+//     })
+//     .then(res => {
+//       if (!res.ok) throw new Error(`Country not found (${res.status})`);
+
+//       return res.json();
+//     })
+//     .then(data => renderCountry(data[0]))
+//     .catch(err => console.error(`${err.message} 💥`));
+// };
+
+// btn.addEventListener('click', whereAmI);
+
+/* 
+Build the image loading functionality that I just showed you on the screen.
+
+Tasks are not super-descriptive this time, so that you can figure out some stuff on your own. Pretend you're working on your own 😉
+
+PART 1
+1. Create a function 'createImage' which receives imgPath as an input. 
+This function returns a promise which creates a new image (use document.createElement('img')) and sets the 
+.src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, 
+and resolve the promise. The fulfilled value should be the image element itself. 
+In case there is an error loading the image ('error' event), reject the promise.
+*/
+
+const imgContainer = document.querySelector('.images');
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const image = document.createElement('img');
+    image.src = imgPath;
+
+    image.addEventListener('load', function () {
+      imgContainer.append(image);
+      resolve(image);
+    });
+
+    image.addEventListener('error', function () {
+      reject(new Error('Image not found'));
+    });
   });
 };
 
-wait(2)
-  .then(() => {
-    console.log('I waited for 2 seconds');
-    return wait(1);
-  })
-  .then(() => console.log('I waited for 1 second'));
+/*
 
-Promise.resolve('abc').then(x => console.log(x));
+If this part is too tricky for you, just watch the first part of the solution.
 
-console.clear();
+
+
+PART 2
+2. Comsume the promise using .then and also add an error handler;
+3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
+4. After the 2 seconds have passed, hide the current image (set display to 'none'), and load a second image 
+(HINT: Use the image element returned by the createImage promise to hide the current image. You will need a global variable for that 😉);
+5. After the second image has loaded, pause execution for 2 seconds again;
+6. After the 2 seconds have passed, hide the current image.
+
+TEST DATA: Images in the img folder. Test the error handler by passing a wrong image path. Set the network speed to 'Fast 3G' in the dev tools Network tab, otherwise images load too fast.
+
+GOOD LUCK 😀
+*/
+
+// let currentImg;
+
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// createImage('img/img-1.jpg')
+//   .then(image => {
+//     currentImg = image;
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Image 2 loaded');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//   })
+//   .catch(err => console.error(err));
 
 const getPosition = function () {
   return new Promise(function (resolve, reject) {
-    // navigator.geolocation.getCurrentPosition(
-    //   position => resolve(position),
-    //   err => reject(err)
-    // );
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 };
 
-getPosition().then(pos => console.log(pos));
+const whereAmI = async function () {
+  try {
+    // const pos = await getPosition();
+    // getPosition();
+    // const { latitude: lat, longitude: lng } = pos.coords;
+
+    // const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    // const dataGeo = await resGeo.json();
+    // console.log(dataGeo);
+
+    // fetch(`https://restcountries.eu/rest/v2/name/${country}`).then(res =>
+    //   console.log(res)
+    // );
+    const res = await fetch(`https://restcountries.eu/rest/v2/name/portugal`);
+    const data = await res.json();
+    renderCountry(data[0]);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// whereAmI('portugal');
+// console.log('FIRST');
+
+// try {
+//   let y = 1;
+//   const x = 2;
+//   x = 3;
+// } catch (err) {
+//   alert(err);
+// }
