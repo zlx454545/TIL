@@ -1,0 +1,27 @@
+{
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zlx454545/ReactZerocho.git"
+  },
+  "author": "Park",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zlx454545/ReactZerocho/issues"
+  },
+  "homepage": "https://github.com/zlx454545/ReactZerocho#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "webpack": "^5.47.1",
+    "webpack-cli": "^4.7.2"
+  }
+}
