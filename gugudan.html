@@ -10,6 +10,89 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <script type="text/babel">
+        class GuGuDan extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = {
+              first: Math.ceil(Math.random() * 9),
+              second: Math.ceil(Math.random() * 9),
+              value: "",
+              result: "",
+            };
+          }
+
+          // react에서 class 안에 arrow function을 사용하는 이유
+          // https://blueshw.github.io/2017/07/01/arrow-function/
+          onSubmit = (e) => {
+            e.preventDefault();
+            if (
+              parseInt(this.state.value) ===
+              this.state.first * this.state.second
+            ) {
+              // 함수형 setState, 바뀌기전의 state를 가질 수 있음
+              // ??? this.setState가 여러개일 경우 비동기로 처리될 수 있음
+              // 따라서 예전값을 기준으로 바꿀때는 함수형 setState 반드시 사용
+              this.setState((prevState) => {
+                return {
+                  // 바뀌기 전의 this.state === prevState
+                  result: `${prevState.first} * ${this.state.second} = ${this.state.value} 정답!`,
+                  first: Math.ceil(Math.random() * 9),
+                  second: Math.ceil(Math.random() * 9),
+                  value: "",
+                };
+              });
+              this.input.focus();
+            } else {
+              this.setState({ result: "땡!", value: "" });
+              this.input.focus();
+            }
+          };
+
+          onChange = (e) => this.setState({ value: e.target.value });
+
+          input;
+          onRefInput = (c) => {
+            this.input = c;
+          };
+
+          render() {
+            // setState를 할경우 render함수가 자동으로 실행됨!!!
+            // 따라서 함수를 render안에 선언하면 매번 새로 함수가 생성됨
+            console.log(`render!!!`);
+            return (
+              // return문에서 불필요한 div를 감싸지 않기위한 fragment
+              // 브라우저상의 babel이 아닌 툴을 직접 설치하면
+              // <> </>와 같이 감쌀 수 있음
+              <React.Fragment>
+                <div>
+                  {this.state.first}곱하기{this.state.second}는?
+                </div>
+                <form onSubmit={this.onSubmit}>
+                  <input
+                    // ref는 documnet의 queryselector와 동일한 기능 수행.
+                    // ??? 공식문서에는 조금 다른 내용도 있는 듯. 공식문서 읽을 때 공부
+                    ref={this.onRefInput}
+                    type="number"
+                    // 폼에서 value에 관한 설명
+                    // https://note.redgoose.me/article/1848/
+                    // value와 default value
+                    value={this.state.value}
+                    onChange={this.onChange}
+                  />
+                  <button>입력!</button>
+                </form>
+                <div>{this.state.result}</div>
+              </React.Fragment>
+            );
+          }
+        }
+      </script>
+
+      <script type="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector("#root"));
+      </script>
+    </div>
   </body>
 </html>
