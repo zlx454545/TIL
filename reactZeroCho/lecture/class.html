@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+    React를 왜 쓰는가?
+    1. 사용자 경험
+    2. 재사용 컴포넌트
+    3. 데이터-화면 일치
+
+
+    리액트에는 React라이브러리와 ReactDOM라이브러리가 존재
+    React라이브러리는 모든 element의 생성과 조작을 handle
+    ReactDOM라이브러리는 그러한 element들을 브라우저에 렌더링
+    하는 역할만 담당
+
+    rendering이란 리액트 컴포넌트를 DOM노드로 변환하여
+    브라우저가 화면 상에 display하는 프로세스를 의미
+      -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <!-- 
+    루트 DOM 노드  이 안에 들어가는 모든 엘리먼트를 React DOM에서 관리
+    일반적으로 하나의 루트 DOM 노드가 존재
+    -->
+    <div id="root"></div>
+    <!-- 
+    LikeButton 클래스에서 render의 문법 변화(JSX:js+xml)로
+    바벨이 필요해짐
+    -->
+    <script type="text/babel">
+      // element는 리액트 앱의 가장 작은 단위
+      // element는 화면에 표시할 내용을 기술
+      // element는 일반 객체
+      // ReactDOM은 React 앨리먼트와 일치하도록 DOM을 업데이트
+      // ReactDOM은 해당 엘리먼트와 그 자식 엘리먼트를 이전의
+      // 엘리먼트와 비교하고 DOM을 필요한 경우에만 업데이트
+
+      // LikeButton 클래스에서 render의 문법 변화로 필요없어짐.
+      //const e = React.createElement;
+
+      class LikeButton extends React.Component {
+        constructor(props) {
+          super(props);
+          // 상태란 바뀔 여지가 있는 부분
+          this.state = {
+            liked: false,
+          };
+        }
+
+        // render함수에서 바뀐 상태를 통해 display되는걸 다르게 함
+        render() {
+          // 첫번째 매개변수 html 태그
+          // 두번째 매개변수 html attr *객체 형식으로 전달
+          // 세번째 매개변수 html 컨텐츠
+          //   return e(
+          //     "button",
+          //     {
+          //       onClick: () => {
+          //         this.setState({ liked: true });
+          //       },
+          //       type: "submit",
+          //     },
+          //     this.state.liked ? "Liked" : "Like"
+          //   );
+          /////////////////////////////////////////////
+          // 위와 같은 표현의 가독성이 너무 안좋기 때문에
+          // 다음과 같은 문법
+
+          return (
+            // class -> className
+            // for -> htmlFor
+            <button
+              type="submit"
+              onClick={() => {
+                this.setState({ liked: true });
+              }}
+            >
+              {this.state.liked ? "Liked" : "Like"}
+            </button>
+          );
+        }
+      }
+    </script>
+    <script type="text/babel">
+      // ReactDOM.render함수
+      // React 엘리먼트를 루트 DOM 노드에 렌더링 하려면
+      // 엘리먼트와 루트 DOM 노드를 매개변수로 전달
+
+      // ReactDOM.render(e(LikeButton), document.querySelector("#root"));
+      // 마찬가지로 가독성 문제때문에 위의 코드를 다음과 같이 변경
+      ReactDOM.render(<LikeButton />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>
