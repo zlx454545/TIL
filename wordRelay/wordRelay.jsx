@@ -2,7 +2,7 @@ const React = require("react");
 const { useState, useRef } = React;
 
 const WordRelay = () => {
-  const [word, setWord] = useState("박완섭");
+  const [word, setWord] = useState("박완섭1");
   const [value, setValue] = useState("");
   const [result, setResult] = useState("");
   const inputRef = useRef(null);

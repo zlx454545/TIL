@@ -12,7 +12,7 @@ module.exports = {
   },
 
   entry: {
-    app: ["./client2"],
+    app: ["./client"],
   }, // 입력
 
   module: {
@@ -33,7 +33,7 @@ module.exports = {
   plugins: [new RefreshWebpackPlugin()],
   output: {
     path: path.join(__dirname, "dist"), // ?? node기능. 경로지정해주는 함수
-    filename: "app2.js",
+    filename: "app.js",
     publicPath: "/dist/",
   }, // 출력
 
