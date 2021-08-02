@@ -1,0 +1,120 @@
+npm init : 패지키.json 생성
+npm i react react-dom :리액트랑 리액트돔 설치
+npm i -D webpack webpack-cli: 웹팩이랑 cli 설치 -D는 개발에서만 쓰인다는 뜻
+webpack.config.js 파일 생성
+
+////////////////////////webpack.config.js 코드 //////////////////////////////
+const path = require("path");
+
+module.exports = {
+    name: "NumberBaseball-setting",
+    mode: "development",
+    devtool: "eval",
+    resolve: {
+        extensions: [".js", ".jsx"],
+    },
+
+    entry: {
+        app: ["./client"],
+    },
+
+    output:{
+        path: path.join(__dirname, "dist"), 
+        filename: "app.js",
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+npm i -D @babel/core : 바벨 다운로드
+npm i -D @babel/preset-env : 브라우저에 맞춰서 최신문법을 깔아줌
+npm i -D @babel/preset-react : for 리액트
+npm i -D babel-loader: 웹팩이랑 바벨 연결
+npm i -D @babel/plugin-proposal-class-properties : 뭔지 모름. 난 안해도 오류 안났음
+
+
+웹팩이랑 바벨을 연결하는 법
+/webpack.config.js 코드에 
+module. exports의 entry와 output 사이에 아래 코드 삽입
+
+////////////////////////////////////////////
+ module: {
+        rules: [{
+            test: /\.jsx?/,
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env', '@babel/preset-react'],
+                plugins: ['@babel/plugin-proposal-class-properties'],
+            },
+        }],
+    },
+
+
+*****
+presets의 경우
+  presets: [['@babel/preset-env',{
+                    targets: {
+                        browsers: ['> 5% in KR'],
+                    }
+                }],"@babel/preset-react"],
+이와 같은 식으로도 설정 할 수 있음
+*****
+
+
+*********
+plugin 까지 최종적으로 실행하고 난 코드
+
+const path = require("path");
+const webpack = require("webpack");
+
+module.exports = {
+    name: "NumberBaseball-setting",
+    mode: "development",
+    devtool: "eval",
+    resolve: {
+        extensions: [".js", ".jsx"],
+    },
+
+    entry: {
+        app: ["./client"],
+    },
+
+    module: {
+        rules: [{
+            test: /\.jsx?/,
+            loader: 'babel-loader',
+            options: {
+                presets: [['@babel/preset-env',{
+                    targets: {
+                        browsers: ['> 5% in KR'],
+                    }
+                }],"@babel/preset-react"],
+                plugins: ['@babel/plugin-proposal-class-properties'],
+            },
+        }],
+    },
+
+
+    plugins: [
+        new webpack.LoaderOptionsPlugin({debug: true}),
+    ],
+
+    output:{
+        path: path.join(__dirname, "dist"), 
+        filename: "app.js",
+    }
+};
+
+***********
+
+/////////////////////////////////////////////
+
+
+app.js를 실제로 빌드하는 방법 두가지 
+1. npx webpack
+2. package.json의 scripts에 "dev" : "webpack" 추가한 후 npm run dev
+
+
+
+
+
