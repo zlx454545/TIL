@@ -162,7 +162,7 @@ const NumberBaseball = () => {
 //     });
 //   };
 
-// createRef사용법
+//   9. createRef사용법
 //   inputRef = createRef();
 
 //   render() {
