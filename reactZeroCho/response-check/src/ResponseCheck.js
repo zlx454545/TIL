@@ -5,6 +5,8 @@ const ResponseCheck = () => {
   const [state, setState] = useState("waiting");
   const [message, setMessage] = useState("클릭해서 시작하세요");
   const [result, setResult] = useState([]);
+  // ref의 또다른 기능
+  // 값은 바뀌지만 화면에는 영향을 미치지 않을 때 ref 사용!
   const timeOut = useRef(null);
   const startTime = useRef(null);
   const endTime = useRef(null);
