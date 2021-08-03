@@ -24,36 +24,33 @@ const NumberBaseball = () => {
     e.preventDefault();
     if (value === answer.join("")) {
       setResult("홈런!");
-      setTries([
-        ...this.state.tries,
-        { try: this.state.value, result: "홈런!" },
-      ]);
+      setTries([...tries, { try: value, result: "홈런!" }]);
       alert("게임을 다시 시작합니다!");
       setValue("");
       setAnswer(getNumbers());
       setTries([]);
     } else {
-      const answerArray = this.state.value.split("").map((v) => parseInt(v));
+      const answerArray = value.split("").map((v) => parseInt(v));
       let strike = 0;
       let ball = 0;
-      if (this.state.tries.length >= 9) {
-        setResult(`10번 초과! 답은 ${this.state.answer.join("")}이었습니다.`);
+      if (tries.length >= 9) {
+        setResult(`10번 초과! 답은 ${answer.join("")}이었습니다.`);
         alert("게임을 다시 시작합니다!");
         setValue("");
         setAnswer(getNumbers());
         setTries([]);
       } else {
         for (let i = 0; i < 4; i++) {
-          if (answerArray[i] === this.state.answer[i]) {
+          if (answerArray[i] === answer[i]) {
             strike += 1;
           } else if (answer.includes(answerArray[i])) {
             ball += 1;
           }
         }
         setTries([
-          ...this.state.tries,
+          ...tries,
           {
-            try: this.state.value,
+            try: value,
             result: `${strike}스트라이크 ${ball}볼 입니다.`,
           },
         ]);
