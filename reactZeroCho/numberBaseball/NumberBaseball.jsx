@@ -1,3 +1,4 @@
+const { useState } = require("react");
 const React = require("react");
 const Try = require("./Try");
 
@@ -13,100 +14,172 @@ function getNumbers() {
   return array;
 }
 
-class NumberBaseball extends React.Component {
-  state = {
-    result: "",
-    value: "",
-    answer: getNumbers(),
-    tries: [],
-  };
+const NumberBaseball = () => {
+  const [result, setResult] = useState("");
+  const [value, setValue] = useState("");
+  const [answer, setAnswer] = useState(getNumbers());
+  const [tries, setTries] = useState([]);
 
-  onSubmitForm = (e) => {
+  const onSubmitForm = (e) => {
     e.preventDefault();
-    if (this.state.value === this.state.answer.join("")) {
-      this.setState({
-        result: "홈런!",
-        // 불변성 때문에 this.state.tries.push() 이런식으로 하면 안됨.
-        // 참조가 달라져야 함.
-        // tries === tries가 되버리기 때문에..
-        tries: [
-          ...this.state.tries,
-          { try: this.state.value, result: "홈런!" },
-        ],
-      });
+    if (value === answer.join("")) {
+      setResult("홈런!");
+      setTries([
+        ...this.state.tries,
+        { try: this.state.value, result: "홈런!" },
+      ]);
       alert("게임을 다시 시작합니다!");
-      this.setState({
-        value: "",
-        answer: getNumbers(),
-        tries: [],
-      });
+      setValue("");
+      setAnswer(getNumbers());
+      setTries([]);
     } else {
       const answerArray = this.state.value.split("").map((v) => parseInt(v));
       let strike = 0;
       let ball = 0;
       if (this.state.tries.length >= 9) {
-        this.setState({
-          result: `10번 초과! 답은 ${this.state.answer.join("")}이었습니다.`,
-        });
+        setResult(`10번 초과! 답은 ${this.state.answer.join("")}이었습니다.`);
         alert("게임을 다시 시작합니다!");
-        this.setState({
-          value: "",
-          answer: getNumbers(),
-          tries: [],
-        });
+        setValue("");
+        setAnswer(getNumbers());
+        setTries([]);
       } else {
         for (let i = 0; i < 4; i++) {
           if (answerArray[i] === this.state.answer[i]) {
             strike += 1;
-          } else if (this.state.answer.includes(answerArray[i])) {
+          } else if (answer.includes(answerArray[i])) {
             ball += 1;
           }
         }
-        this.setState({
-          tries: [
-            ...this.state.tries,
-            {
-              try: this.state.value,
-              result: `${strike}스트라이크 ${ball}볼 입니다.`,
-            },
-          ],
-        });
+        setTries([
+          ...this.state.tries,
+          {
+            try: this.state.value,
+            result: `${strike}스트라이크 ${ball}볼 입니다.`,
+          },
+        ]);
       }
     }
   };
 
-  onChangeInput = (e) => {
-    console.log(this.state.answer);
-    this.setState({
-      value: e.target.value,
-    });
+  const onChangeInput = (e) => {
+    console.log(answer);
+    setValue(e.target.value);
   };
 
-  render() {
-    return (
-      <>
-        <h1>{this.state.result}</h1>
-        <form onSubmit={this.onSubmitForm}>
-          <input
-            maxLength={4}
-            value={this.state.value}
-            onChange={this.onChangeInput}
-          />
-        </form>
-        <div>시도: {this.state.tries.length}</div>
-        <ul>
-          {this.state.tries.map((v, i) => {
-            // 이렇게 파일을 분리할 경우 props가 필요해짐
-            // props가 생기면서 부모자식 관계 형성
-            // 부모 컴포넌트가 자식 컴포넌트에게 props를 물려줌
-            // 이런 부모 자식 관계가 깊어지면 redux mobx context등을 사용하여 관리
-            return <Try key={`${i + 1}번째 시도`} tryInfo={v} index={i} />;
-          })}
-        </ul>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <h1>{result}</h1>
+      <form onSubmit={onSubmitForm}>
+        <input maxLength={4} value={value} onChange={onChangeInput} />
+      </form>
+      <div>시도: {tries.length}</div>
+      <ul>
+        {tries.map((v, i) => {
+          // 이렇게 파일을 분리할 경우 props가 필요해짐
+          // props가 생기면서 부모자식 관계 형성
+          // 부모 컴포넌트가 자식 컴포넌트에게 props를 물려줌
+          // 이런 부모 자식 관계가 깊어지면 redux mobx context등을 사용하여 관리
+          return <Try key={`${i + 1}번째 시도`} tryInfo={v} index={i} />;
+        })}
+      </ul>
+    </>
+  );
+};
+
+// class NumberBaseball extends React.Component {
+//   state = {
+//     result: "",
+//     value: "",
+//     answer: getNumbers(),
+//     tries: [],
+//   };
+
+//   onSubmitForm = (e) => {
+//     e.preventDefault();
+//     if (this.state.value === this.state.answer.join("")) {
+//       this.setState({
+//         result: "홈런!",
+//         // 불변성 때문에 this.state.tries.push() 이런식으로 하면 안됨.
+//         // 참조가 달라져야 함.
+//         // tries === tries가 되버리기 때문에..
+//         tries: [
+//           ...this.state.tries,
+//           { try: this.state.value, result: "홈런!" },
+//         ],
+//       });
+//       alert("게임을 다시 시작합니다!");
+//       this.setState({
+//         value: "",
+//         answer: getNumbers(),
+//         tries: [],
+//       });
+//     } else {
+//       const answerArray = this.state.value.split("").map((v) => parseInt(v));
+//       let strike = 0;
+//       let ball = 0;
+//       if (this.state.tries.length >= 9) {
+//         this.setState({
+//           result: `10번 초과! 답은 ${this.state.answer.join("")}이었습니다.`,
+//         });
+//         alert("게임을 다시 시작합니다!");
+//         this.setState({
+//           value: "",
+//           answer: getNumbers(),
+//           tries: [],
+//         });
+//       } else {
+//         for (let i = 0; i < 4; i++) {
+//           if (answerArray[i] === this.state.answer[i]) {
+//             strike += 1;
+//           } else if (this.state.answer.includes(answerArray[i])) {
+//             ball += 1;
+//           }
+//         }
+//         this.setState({
+//           tries: [
+//             ...this.state.tries,
+//             {
+//               try: this.state.value,
+//               result: `${strike}스트라이크 ${ball}볼 입니다.`,
+//             },
+//           ],
+//         });
+//       }
+//     }
+//   };
+
+//   onChangeInput = (e) => {
+//     console.log(this.state.answer);
+//     this.setState({
+//       value: e.target.value,
+//     });
+//   };
+
+//   render() {
+//     return (
+//       <>
+//         <h1>{this.state.result}</h1>
+//         <form onSubmit={this.onSubmitForm}>
+//           <input
+//             maxLength={4}
+//             value={this.state.value}
+//             onChange={this.onChangeInput}
+//           />
+//         </form>
+//         <div>시도: {this.state.tries.length}</div>
+//         <ul>
+//           {this.state.tries.map((v, i) => {
+//             // 이렇게 파일을 분리할 경우 props가 필요해짐
+//             // props가 생기면서 부모자식 관계 형성
+//             // 부모 컴포넌트가 자식 컴포넌트에게 props를 물려줌
+//             // 이런 부모 자식 관계가 깊어지면 redux mobx context등을 사용하여 관리
+//             return <Try key={`${i + 1}번째 시도`} tryInfo={v} index={i} />;
+//           })}
+//         </ul>
+//       </>
+//     );
+//   }
+// }
 
 module.exports = NumberBaseball;
 
