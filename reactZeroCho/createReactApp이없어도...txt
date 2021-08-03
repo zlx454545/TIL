@@ -115,6 +115,80 @@ app.js를 실제로 빌드하는 방법 두가지
 2. package.json의 scripts에 "dev" : "webpack" 추가한 후 npm run dev
 
 
+핫 리로딩 설정법
+npm i react-refresh @pmmmwh/react-refresh-webpack-plugin -D
+npm i -D webpack-dev-server
 
+package.json의 scripts의 "dev" : "webpack serve --env development" 로 설정
+webpack.config.js 의 plugins에 new RefreshWebpackPlugin() 작성
+webpack.config.js의 module의 rule의 plugins에 "react-refresh/babel" 작성
+webpack.config.js의 output에 publicPath: "dist/" 추가
+module.exports안에 모듈 플러그인 아웃풋 다음 
+devServer: {
+    publicPath: "/dist/",
+    hot: true,
+  } 추가
 
+//////////////////최종 webpack.config.js ///////////////////
+
+const path = require("path");
+const webpack = require("webpack");
+const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
+module.exports = {
+  name: "NumberBaseball-setting",
+  mode: "development",
+  devtool: "eval",
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+
+  entry: {
+    app: ["./client"],
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.jsx?/,
+        loader: "babel-loader",
+        options: {
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: {
+                  browsers: ["> 5% in KR"],
+                },
+              },
+            ],
+            "@babel/preset-react",
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "react-refresh/babel",
+          ],
+        },
+      },
+    ],
+  },
+
+  plugins: [
+    new webpack.LoaderOptionsPlugin({ debug: true }),
+    new RefreshWebpackPlugin(),
+  ],
+
+  output: {
+    path: path.join(__dirname, "dist"),
+    filename: "app.js",
+    publicPath: "/dist/",
+  },
+
+  devServer: {
+    publicPath: "/dist/",
+    hot: true,
+  },
+};
+
+////////////////////////////////////////////////////////////////
 
