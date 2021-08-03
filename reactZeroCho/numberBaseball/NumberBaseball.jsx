@@ -47,13 +47,15 @@ const NumberBaseball = () => {
             ball += 1;
           }
         }
-        setTries([
-          ...tries,
-          {
-            try: value,
-            result: `${strike}스트라이크 ${ball}볼 입니다.`,
-          },
-        ]);
+        setTries((prevTries) => {
+          return [
+            ...prevTries,
+            {
+              try: value,
+              result: `${strike}스트라이크 ${ball}볼 입니다.`,
+            },
+          ];
+        });
       }
     }
   };
