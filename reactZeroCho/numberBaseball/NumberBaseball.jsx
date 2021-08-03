@@ -1,4 +1,4 @@
-const { useState } = require("react");
+const { useState, useRef, createRef } = require("react");
 const React = require("react");
 const Try = require("./Try");
 
@@ -19,9 +19,11 @@ const NumberBaseball = () => {
   const [value, setValue] = useState("");
   const [answer, setAnswer] = useState(getNumbers());
   const [tries, setTries] = useState([]);
+  const inputRef = useRef(null);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
+    inputRef.current.focus();
     if (value === answer.join("")) {
       setResult("홈런!");
       setTries([...tries, { try: value, result: "홈런!" }]);
@@ -69,7 +71,12 @@ const NumberBaseball = () => {
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
-        <input maxLength={4} value={value} onChange={onChangeInput} />
+        <input
+          ref={inputRef}
+          maxLength={4}
+          value={value}
+          onChange={onChangeInput}
+        />
       </form>
       <div>시도: {tries.length}</div>
       <ul>
@@ -95,6 +102,7 @@ const NumberBaseball = () => {
 
 //   onSubmitForm = (e) => {
 //     e.preventDefault();
+//     this.inputRef.current.focus();
 //     if (this.state.value === this.state.answer.join("")) {
 //       this.setState({
 //         result: "홈런!",
@@ -154,12 +162,16 @@ const NumberBaseball = () => {
 //     });
 //   };
 
+// createRef사용법
+//   inputRef = createRef();
+
 //   render() {
 //     return (
 //       <>
 //         <h1>{this.state.result}</h1>
 //         <form onSubmit={this.onSubmitForm}>
 //           <input
+//             ref = {this.inputRef}
 //             maxLength={4}
 //             value={this.state.value}
 //             onChange={this.onChangeInput}
