@@ -52,7 +52,8 @@ class RSP extends Component {
     }
   };
 
-  onClickBtn = (choice) => {
+  // 고차함수 패턴
+  onClickBtn = (choice) => () => {
     clearInterval(this.interval);
     const { imgCoord } = this.state;
     const myScore = scores[choice];
@@ -91,25 +92,17 @@ class RSP extends Component {
           }}
         />
         <div>
-          <button
-            id="rock"
-            className="btn"
-            onClick={() => this.onClickBtn("rock")}
-          >
+          <button id="rock" className="btn" onClick={this.onClickBtn("rock")}>
             바위
           </button>
           <button
             id="scissor"
             className="btn"
-            onClick={() => this.onClickBtn("scissor")}
+            onClick={this.onClickBtn("scissor")}
           >
             가위
           </button>
-          <button
-            id="paper"
-            className="btn"
-            onClick={() => this.onClickBtn("paper")}
-          >
+          <button id="paper" className="btn" onClick={this.onClickBtn("paper")}>
             보
           </button>
         </div>
