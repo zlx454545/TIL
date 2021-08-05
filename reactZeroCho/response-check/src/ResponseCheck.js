@@ -1,4 +1,4 @@
-import { Component, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import React from "react";
 
 const ResponseCheck = () => {
