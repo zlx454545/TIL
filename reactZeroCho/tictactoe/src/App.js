@@ -24,13 +24,13 @@ const reducer = (state, action) => {
 const TicTacToe = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // const [winner, setWinner] = useState("");
-  // const [turn, setTurn] = useState("O");
-  // const [tableData, setTableData] = useState([
-  //   ["", "", ""],
-  //   ["", "", ""],
-  //   ["", "", ""],
-  // ]);
+  const [winner, setWinner] = useState("");
+  const [turn, setTurn] = useState("O");
+  const [tableData, setTableData] = useState([
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ]);
 
   const onClickTable = useCallback(() => {
     dispatch({ type: "SET_WINNER", winner: "O" });
