@@ -32,6 +32,7 @@ const result = words.filter((word) => word.length > 6);
 // 네번째 매개변수는 arr (배열 자체)
 const arr12 = [5, 7, 2, 4];
 const sum = arr12.reduce((acc, el) => (acc += el), 0); // acc === 18
+console.log(sum);
 
 // 1. 배열 수정 메소드 정리
 
