@@ -1,15 +1,24 @@
-import React, { Component } from "react";
-import ScrollBox from "./ScrollBox";
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <ScrollBox ref={(ref) => (this.scrollBox = ref)} />
-        <button onClick={() => this.scrollBox.scrollToBottom()}>
-          맨 밑으로
-        </button>
-      </div>
-    );
-  }
-}
+import React, { Component, useState } from "react";
+import LifeCycleSample from "./LifeCycleSample";
+import ErrorBoundary from "./ErrorBoundary";
+import Info from "./Info";
+
+const App = () => {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          setVisible(!visible);
+        }}
+      >
+        {visible ? "숨기기" : "보이기"}
+      </button>
+      <hr />
+      {visible && <Info />}
+    </div>
+  );
+};
+
 export default App;
