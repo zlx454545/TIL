@@ -1,48 +1,63 @@
 ﻿#include <iostream>
-#include <vector>
+#include <cstdio>
+
 using namespace std;
 
-int arr[22][22];
-int n;
-int ans = 987654321;
 
+int arr[5][5];
+int row; // 행 몇개
+int col; // 열 몇개
+int ans = -1;
 
 int main()
 {
-	cin >> n;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			cin >> arr[i][j];
+	cin >> row >> col;
+
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			scanf("%1d", &arr[i][j]);
 		}
 	}
 
 
-	for (int i = 0; i < (1<<n); i++) {
-		vector<int> team1, team2;
-		for (int j = 0; j < n; j++) {
-			if (i & (1 << j)) {
-				team1.push_back(j);
+	for (int i = 0; i < (1 << (row * col)); i++) {
+		int sum = 0;
+
+		//가로 처리
+		for (int j = 0; j < row; j++) {
+			//가로 한줄당
+			int cur = 0;
+			for (int k = 0; k < col; k++) {
+				int l = j * col + k;
+				if ((i & (1<<l)) == 0) {
+					cur = cur * 10 + arr[j][k];
+				}
+				else {
+					sum += cur;
+					cur = 0;
+				}
 			}
-			else {
-				team2.push_back(j);
-			}
+			sum += cur;
 		}
 
-		if (team1.size() != n / 2) {
-			continue;
-		}
-
-		int t1 = 0;
-		int t2 = 0;
-		for (int k = 0; k < n/2; k++) {
-			for (int l = 0; l < n / 2; l++) {
-				t1 += arr[team1[k]][team1[l]];
-				t2 += arr[team2[k]][team2[l]];
+		//세로 처리
+		for (int k = 0; k < col; k++) {
+			// 세로 한줄당
+			int cur = 0;
+			for (int j = 0; j < row; j++) {
+				int l = j * col + k;
+				if ((i & (1 << l)) != 0) {
+					cur = cur * 10 + arr[j][k];
+				}
+				else {
+					sum += cur;
+					cur = 0;
+				}
 			}
+			sum += cur;
 		}
 
-		ans = ans > abs(t1 - t2) ? abs(t1 - t2) : ans;
+		ans = max(ans, sum);
 	}
-
 	cout << ans;
 }
