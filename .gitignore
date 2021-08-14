@@ -1,0 +1,12 @@
+
+*.tlog
+*.exe
+*.recipe
+algo/.vs/algo/v16/.suo
+algo/Debug/algo.ilk
+algo/Debug/algo.log
+algo/Debug/algo.obj
+algo/Debug/algo.pdb
+algo/Debug/algo.vcxproj.FileListAbsolute.txt
+algo/Debug/vc142.idb
+algo/Debug/vc142.pdb
