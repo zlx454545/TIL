@@ -1,0 +1,403 @@
+meta태그 구글에서 보여지는 설명(그 클릭 링크 밑에 있는거)
+meta 어트리뷰트
+name
+content
+네임에 디스크립션 적고 컨텐트에 내용 적으면 설명에 컨텐트가 나오느거임
+charset="utf-8"
+
+<html lang="en"> 랭태그 주로 사용하는 언어가 뭔지
+<link rel="" href=""> 타이틀에 이미지 ?????????????????????????
+<meta property="og:image, title, description..">카톡 전송할때 
+
+같은 단어 수정은 컨트롤 D  동시입력은 알트
+
+시멘틱 태그 : 의미없는 태그 다만 개발자가 구분하기 쉬움
+<div>로 구역설정 // 가장 광범위한 개념
+<header>
+<main>
+<footer>
+
+<span> 긴 문단은 p 짧은 텍스트는 span이 적절함.
+<address>
+
+
+
+
+
+------css---------
+
+클래스 여러개 가질 수 있음 ex <span class="class1 class2"></span>
+
+box
+
+
+div header main section footer article p 등등..  // image a span은 박스 아님 얘네는 inline 인라인 종류를 알아두는게 편함
+박스 옆에 다른 박스 오지 않아 // block
+
+inline이면 heigt와 width를 가질 수 없다. -> 위 아래에 margin 불가능 좌우로만 margin 가능 padding 은 사방 다 가능
+->위아래 margin 주고싶으면 block으로 바꿔야됨
+
+collapsing margin 흰 박스의 경계와 보라색 박스의 경계border가 같으면 하나로 취급됨. 위아래에서만 발생하는 현상.
+-> 이걸 해결하려고 padding (깊게 생각하지말기)
+
+flexbox : 
+1. 자식 엘리먼트에는 어떤 것도 적지 말아야 한다. 부모 엘리멘트에만 말한다. 
+부모 엘리멘트를 flex 컨테이너.(부모한테 display:flex;)
+2.justify-content : 정렬 쉽게해줌. main axis(수평이 디폴트) 기준!!!!
+3.align-items : cross axis(수직이 디폴트)기준!!!!! // 부모의 높이를 height : 100vh;(vh도 리스폰시브하게 함)
+
+flex direction: row; //디폴트값
+flex direction : column; (mainx axis가 수직, cross axis가 수평)
+reverse 붙이면 순서 반대로
+
+화면 줄이면 쪼그라드는걸 wrapping
+flex-wrap: wrap 초기 사이즈에서 더이상 쪼그라들지 않음
+flex-wrap도 reverse 기능 있음
+
+
+
+position 
+
+fixed
+.class{
+     top: 5px;
+     left: 20px;
+     position : fixed;
+}
+
+
+static : 디폴트
+
+
+realtive
+처음 놓인 곳은 기준으로
+top:-10px;
+와 같이 위치를 수정할 수 있음
+
+absolute
+relative인 부모를 기준으로 위치 설정
+relative인 부모가 없으면 body 를 기준으로 
+
+
+
+수도 셀렉터
+
+div:last-child{
+   background color : green;
+}
+
+last-child : 마지막 자식
+first-child : 첫번째 자식
+nth-child(2) : 2번째 자식
+nth-child(even) : 짝수번째 자식 
+nth-child(odd) : 홀수번째 자식
+nth-child(2n+1) : 1, 3, 5, 7, 9 .....
+
+
+p span{              // p안의 span 부모먼저쓰고 자식
+   background color : green;
+}
+이와 같이 쓰면 p의 직속 자식이 아니라 후손일지라도 속성을 가짐.
+
+p>span{
+   background color : green;
+}
+p의 직속 자식인 span만 속성을 지님
+
+p+span{
+  background color : green;
+}
+p바로 다음에 오는 형제 span에게만 속성을 줌. p와 span사이에 다른 형제가 있으면 적용 안됨. 무조건 다음 형제
+
+p~span : 이거는 바로 뒤 형제일 필요없고 그냥 형제이기만 하면 됨
+
+
+
+input : required required인 애만
+
+input[type="password"]{
+   background color : green;
+}
+
+input중 타입이 패스워드인 애들만 골를 수 있음.
+
+input[placeholder~="name"]{
+  background color : green;
+}
+
+input중 placeholder에 name이 포함된 애들을 고를 수 있음.
+
+form : focus-within{
+  border-color : green;
+} 
+form안의 요소가 focused되면 상태를 바꿈.
+
+
+form:hover input{
+  background-color : green;
+}
+form에 마우스를 올렸을 때 form 자식,후손들 중에 input의 상태를 바꿈
+
+form:hover input:focused{
+  background-color : green;
+}
+form에 마우스가 올라가고 form자식,후손 input중에 focused가 되면 상태를 바꿈
+
+
+input :: placeholder{
+   background-color: yellow;
+}
+플레이스 홀더를 꾸밀 수 있음.
+
+
+p :: selection {
+    background-color : yellow;
+}
+드래그 해서 선택하면 속성 변경.
+
+
+p :: first-letter{
+   background-color : green;
+}
+첫글자만
+
+
+
+
+
+변수  
+:root{
+    --variable : #EF23FE;    //변수 이름은 항상 --이후에 적어줘야함.
+}
+
+p{
+  background-color : var(--varaible);    //변수 사용법
+}
+
+
+
+
+transition  
+
+a { 				//항상 transition은 root에 있어야함(원래 엘리먼트가 있던곳)
+   color : white;
+   transition: color 10s ease-in-out;     // ease in out은 음.. 걸리는 시간 조정이라해야되나, all이라고 쓰면 다 변함
+}
+
+a:hover{
+   color : red;
+}
+
+
+
+
+border-radius : 50% //원으로 됨
+
+
+transform
+
+img {
+    transform: rotateY(85deg) retateX(20deg) rotateZ(10deg);
+}
+
+
+transformation은 다른 box, 이미지에 영향을 미치지 않는다.
+
+
+transfrom mdn 검색
+
+
+
+
+@keyframes supersexycoinflip{
+ from{				//from ,to 대신에 0%50%100%와 같이 단계를 더 세분화할 수 있음
+    transform : rotateY(0);
+       }
+    to{
+    transform : rotateY(260deg);
+      }
+}
+
+img{
+  animation : supersexycoinflip 5s ease-in-out infinite;
+}
+
+
+ㅡㅡㅡㅡ
+반응형!!
+
+@media screen and (max-width: 600px) {    // 화면 넓이가 600보다 작을때만 배경색 토마토 //min-device-with, orientation 
+   div{
+     background-color : tomato;
+    }
+}
+
+
+BEM(block element modifier)
+-모든건 class로 작성 id사용 x
+.btn__price{} // Element that depends upon the block
+.btn--oragne{} // Modifier that changes the style of the block
+
+
+
+스크립트는 항상 마지막에 있어야됨. 바디 태그 닫기 직전에
+
+아이콘 따오는 곳
+
+font awesome
+heroicons
+
+
+css hack
+status-bar 참고
+
+바디 마진 없애기(reset css)
+https://cssdeck.com/blog/scripts/eric-meyer-reset-css/
+
+:not() //특정 엘리먼트만 빼고 css적용하고 싶을 때
+
+form 
+action : 어떤 페이지로 data를 보낼지 결정할 수 있음
+
+method
+post : 
+get : 보안 취약
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+navigation 구글 밑에 쫘라락 뜨는게 네비게이션에 있는 목록들 가져오는거임
+
+단축키 
+nav >ul > li*4>a
+
+box-sizing : border-box -> padding을 줘도 박스사이즈를 그대로 유지하는거
+
+
+absolute : 기존 플로우 무시
+relative : 기존 플로우 유지
+absolute, fixed : width 100프로가 아님 
+
+
+기존 틀에서 변형모드 있을 시 
+클래스 두개 사용
+그리고 나서 하나에다가 변형만 적용
+
+flexbox가 block들을 inline block화 하는거임 ->
+ 내용물의 width만큼만, height는 컨테이너 높이만큼
+
+
+flex-end 뜻 알아보기 - > 끝쪽으로!!!
+z-index는 fixed나 absol에만?
+margin left auto 알아보기
+flex children order 알아보기 -> reverse
+
+chat screen part three align center 원리??
+chat screen part two~three 부분 공부해보자
+hack 파헤쳐보기
+
+@keyframework??
+animation forward 키워드 
+
+visibility : hidden;
+animation-delay : 2s;
+
+will change
+
+6.38 애니메이션 부분 어썸하다..
+
+
+
+
+
+
+
+MDN...
+ㅡ
+css 우선순위
+계단식 : 그 두번 중복되서 나오는 거 있으면 뒤에게 적용됨 덮어씌움
+요소선택자보다 클래스나 id가 더 우선적용됨
+
+3. 소스순서 : ㅇㅇ 윗윗줄에 저거임
+
+2. 우선 순위: ㅇㅇ 윗윗줄 저거 더하기 아래와 같은 점수 멕이는 방법이 있음. 
+thousands : 인라인 스타일
+hundereds : ID 선택자
+tens : 클래스,속성,수도 클래스(범용 선택자 (*), 결합자 (+, >, ~, ' ') 및 부정 pseudo-class (:not) 는 
+우선 순위에 영향을 미치지 않습니다.)
+ones: 수도 엘리먼트, 요소 선택자
+
+1. importance
+!important 붙여버리면 싸그리 무시 ㅋㅋ
+
+
+상속
+되는것도 있고 안되는 것도 있음
+clolor나 font-family는 body에 적용해도 안에 잇는건 다됨
+width는 상속 안됨
+
+상속제어
+inherit: 선택한 요소의 부모랑 특정 속성값을 동일하게 설정
+initial: 속성값을 브라우저 기본설정 값이랑 똑같게 설정
+unset: 속성이 상속되면 inherit 아니면 initial처럼 작동
+all: 모든 속성 컨츄롤
+ㅡ
+선택자
+
+
+class 선택자
+h1.class : h1중에 class라는 클래스 가진애만 선택
+.cla.class : .cla랑 .class 클래스 둘다 가진 애만 선택
+h1#class: h1중에 class라는 아이디 가진애만 선택
+
+attribute 선택자
+li[class] : class란는 attribute를 가진 모든 애 선택
+li[class="a"] : class="a"인 애만 선택, class="a b"얘는 선택안함
+li[class~="a"] : class="a"랑 class="a b"같이 포함된 애는 다 선택
+
+[attr^=value]	li[class^="box-"]	Matches elements with an attr attribute, whose value begins with value.
+[attr$=value]	li[class$="-box"]	Matches elements with an attr attribute whose value ends with value.
+[attr*=value]	li[class*="box"]	Matches elements with an attr attribute whose value contains value anywhere within the string.
+
+If you want to match attribute values case-insensitively you can use the value i before the closing bracket.
+li[class^="a" i] {
+    color: red;
+}
+<ul>
+    <li class="a">Item 1</li>
+    <li class="A">Item 2</li>
+    <li class="Ab">Item 3</li>
+</ul>
+ㅡ
+박스 모델
+블락 박스 : 걍 한줄 차지하는거임, width랑 height속성 가짐, 패딩이랑 마진은 다른 엘리먼트를 박스로부터 밀리도록 할거임
+인라인 박스: width랑 height속성 없음, 수직 패딩 마진 보더는 적용 하지만 다른 인라인 박스가 밀려나가진 않음
+수평 패딩 마진 보더는 적용 그리고 다른 인라인 박스가 밀려나감
+
+display: inline-block : 블락이랑 인라인의 중간 
+
+inner and outer display type
+outer는? 블락이냐 인라인이냐
+inner는 기본적으로 normal flow, 근데 display: flex로 설정하면 outer는 블락 inner는 flex  
+
+
+standard box model
+content box : 보더에서 패딩만큼 뺀 부분 width와 height로 설정
+padding box: 니가 아는 패딩 맞음
+border box: 컨텐트랑 패딩 감싸는 부분 ㅇㅇ
+margin: 니가 아는 마진 맞음
+
+
+alternative box model
+box-sizing: border-box
+width랑 height는 보더+패딩 + 컨텐트를 조절함
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+이렇게 하면 모든게 알터네이티브 박스모델
+
+마진 collapse 문서가 따로 mdn에 있음 읽어보셈.
