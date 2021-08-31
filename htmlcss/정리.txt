@@ -421,3 +421,75 @@ contain — 사진 원본 비율 그대로 박스에 참. 대신 박스에 빈�
 gradient
 background-image: linear-gradient(105deg, rgba(0,249,255,1) 0%, rgba(0,250,57,1) 100%);
 background-position: 왼쪽 중간 오른쪽부터 맞추고, 위아래 맞추기 
+
+
+ㅡ
+handling different text directions
+
+
+writing-mode: vertical-rl 수직인데 줄들이 오른쪽에서 왼쪽
+writing-mode: vertical-lr 수직인데 줄들이 왼쪽에서 오른쪽
+horizontal-tb: 수평 ㅇㅇ
+
+block and inline is tied to the writing mode of the document, and not the physical screen.
+블럭과 인라인은 writing모드와 연관이 있다. 물리적 스크린이 아님
+vertical 하게 하면 가로면이 block dimension이 되는거임
+inline dimension은 문장의 방향이랑 같음 즉 vertical에선 세로면!
+
+근데 그냥 width를 수직모드로 써도 width는 horizontal한 넓이로 적용되버림.
+width는 physical하다고 표현
+-> 이걸 해결하기 위해 logical, flow relative한 속성이 있음
+width -> inline-size
+heigth -> block-size
+
+margin border padding도 동일하게 피지컬함!
+margin-top -> margin-block-start
+padding-left -> padding-inline-start
+border-bottom -> border-block-end
+
+top->blcok-start
+right -> inline-end
+bottom -> block-end
+left->inline-start
+
+
+ㅡ
+overflow
+
+overflow: hidden //오버플로우된 컨텐츠 아예 안보임
+overflow: scroll // 오버플로우 되면 스크롤 할 수 있게해줌
+overflow-y: scroll // 세로축만 스크롤 바 생김
+overflow-x: scroll // 긴 단어의 경우 가로축만 스크롤바 생김 -> 되도록 쓰지 말것 overflow-wrap 사용
+overflow: auto // overflow 될 경우에만 스크롤바 생김
+overflow: scroll hidden // 앞에 속성이 x축 뒤에 속성이 y축으로 적용
+
+ㅡ
+css values and units
+
+length
+absolute
+px
+
+relative
+em	Font size of the parent, in the case of typographical properties like font-size, and font size of the element itself, in the case of other properties like width.
+rem	Font size of the root element.
+vw	1% of the viewport's width.
+vh	1% of the viewport's height.
+vmin	1% of the viewport's smaller dimension.
+vmax	1% of the viewport's larger dimension.
+
+percentages
+언제나!! 다른 어떤 것과 relative함
+
+numbers
+opacity : 0.3 // 뒤에 어떤 단위도 안붙음
+
+Hexadecimal RGB values
+background-color: #027682;
+
+RGB and RGBA values
+background-color: rgb(2, 121, 139);
+background-color: rgba(2, 121, 139, .1); vs opacity? opacity는 모든 것을 투명하게, rgba는 색만!
+
+hsl and hsla
+background-color: hsl(188, 97%, 28%);
