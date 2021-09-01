@@ -345,15 +345,45 @@ ES5에는 암시적 전역변수 존재
 
 
 
+ㅡ
+동기 비동기
+
+동기 : 다음 코드가 이전 코드의 실행이 끝나기를 기다린다고 이해할 수 있음(-> block이 된다고 이해)
+비동기: 다음 코드는 이전 코드의 실행이 끝나지 않아도 진행됨(-> non blocking)
+
+ajax call : asynchronous javascript and xml.  대표적인 비동기. request data from web servers dynamically 
+(xml : json이전의 데이터 format. 이젠 아무도 안씀)
+api : 어플리케이션 프로그래밍 인터페이스 . 제네럴한 용어 
+json: data format -> 객체를 스트링화한 형식
 
 
 
 
+request = new XMLHttpRequest();
+request.open( 'GET',  url );
+request.send();
+request.addEventListener('load', function () {const data = JSON.parse(this.responseText)});
+이벤트 리스너안에 또 비슷한 작업을 해야되면 콜백헬 발생
+
+-> promise로 콜백헬 탈출!
+fetch 함수는 promise 사용해서 콜백헬로부터 자유롭다
 
 
+그럼 promise는 뭘까?
+딱딱하게 말하면 An object that is used as a placeholder for the future result of an asynchronous operation.
+조금 루즈하게 말하면 A container for an asynchronously delivered value
+더더욱 루즈하게 말하면 A container for a future value
+
+promise의 라이프 사이클
+pending settled
+pending: before the future value is available
+settled: asynchronous task has finished
+
+settled는 다시 두개로 나뉨 fulfilled rejected
+한번 settled되고 나서 fulfilled나 rejected 상태를 변경할 수는 없음
+
+build promise -> consume promise 
+promise build하는 것보다 consume하는게 더 쉽다! consume하는 법을 먼저 보자
 
 
-
-
-
-
+promise가 settled(fulfilled) 되고나면 .then()을 이용할 수 있음
