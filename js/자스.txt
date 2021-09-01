@@ -387,3 +387,14 @@ promise build하는 것보다 consume하는게 더 쉽다! consume하는 법을 
 
 
 promise가 settled(fulfilled) 되고나면 .then()을 이용할 수 있음
+
+fetch의 경우 Response객체를 래핑한 promise로 반환하기 때문에.. Response.prototype.json()을 통해 
+역직렬화 하여 사용하여야 하므로 다음과 같은 패턴을 보임
+fetch( url )
+    .then(function(response){
+       return response.json();
+   })
+    .then(function (data){ 
+       console.log(data);
+  });
+);
