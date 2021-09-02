@@ -213,35 +213,35 @@ const getJSON = function (url, errorMsg = 'Something went wrong') {
 
 // console.log('Test end');
 
-// const lottery = new Promise(function (resolve, reject) {
-//   console.log('Lotter draw is happening');
-//   setTimeout(function () {
-//     if (Math.random() >= 0.5) {
-//       resolve(3);
-//     } else {
-//       reject(new Error('You lost your money 💔'));
-//     }
-//   }, 2000);
-// });
+const lottery = new Promise(function (resolve, reject) {
+  console.log('Lotter draw is happening');
+  setTimeout(function () {
+    if (Math.random() >= 0.5) {
+      resolve(3);
+    } else {
+      reject(new Error('You lost your money 💔'));
+    }
+  }, 2000);
+});
 
-// lottery.then(res => console.log(res)).catch(err => console.error(err));
+lottery.then(res => console.log(res)).catch(err => console.error(err));
 
-// const lottery = new Promise(function (resolve, reject) {
-//   if (Math.random() >= 0.5) {
-//     resolve();
-//   }
-// });
+const lottery = new Promise(function (resolve, reject) {
+  if (Math.random() >= 0.5) {
+    resolve();
+  }
+});
 
-// // Promisifying setTimeout
+// Promisifying setTimeout
 
-// wait(2)
-//   .then(() => {
-//     console.log('I waited for 2 seconds');
-//     return wait(1);
-//   })
-//   .then(() => console.log('I waited for 1 second'));
+wait(2)
+  .then(() => {
+    console.log('I waited for 2 seconds');
+    return wait(1);
+  })
+  .then(() => console.log('I waited for 1 second'));
 
-// Promise.resolve('abc').then(x => console.log(x));
+Promise.resolve('abc').then(x => console.log(x));
 
 // const getPosition = function () {
 //   return new Promise(function (resolve, reject) {
