@@ -193,7 +193,22 @@ module.exports = {
 ////////////////////////////////////////////////////////////////
 
 
+import React from 'react'
+const React = require('react)
 
+import는 es2015 modules
+require는 commonJS mudles
+
+jsx에서 css를 적용시킬때
+html : <div style="background-color:blue"> </div> 
+jsx : <div style={{backgroundColor: 'blue' }}> </div>
+bracket중 하나는 js문법을 쓰겠다는 의미이고 안쪽 하나는 객체를 나타내는 것
+
+
+const buttonText = [10, "there"];
+<button> {buttonText} </button>
+
+button에 10there이라고 나옴!
 
 
 
