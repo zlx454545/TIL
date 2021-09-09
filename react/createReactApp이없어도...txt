@@ -1,3 +1,130 @@
+::::::::::::::::::::::::: 리액트 입문
+import React from 'react'
+const React = require('react)
+
+import는 es2015 modules
+require는 commonJS mudles
+
+jsx에서 css를 적용시킬때
+html : <div style="background-color:blue"> </div> 
+jsx : <div style={{backgroundColor: 'blue' }}> </div>
+bracket중 하나는 js문법을 쓰겠다는 의미이고 안쪽 하나는 객체를 나타내는 것
+
+
+const buttonText = [10, "there"];
+<button> {buttonText} </button>
+
+button에 10there이라고 나옴!
+
+::::::::::::::::::::::::: 클래스형 컴포넌트
+state는 component 관련 데이터를 담고 있는 object 
+state는 setState함수를 통해서만 업데이트가 된다
+함수형 컴포넌트와 다르게 render함수가 항상 있어야한다
+
+constructor(props){
+	super(props);
+	this.state = {lat : null};
+}
+
+babel덕분에 constructor 없이
+class내에 state = {lat:null} 해도 위와 완전히 동일!
+
+이후 render함수 실행
+setState마다 거의 대부분 render재실행
+setState에서 변하는 요소만 설정해도 다른애들은 그대로 남아있음
+
+
+::::::::::::::::::::::::: 클래스 컴포넌트 라이프사이클
+constructor
+render
+componentDidMount
+componentDidUpdate
+
+!!! best practice
+constructor에서 데이터로딩하지 말것.
+componentDidmount에서 데이터로딩이 더욱 올바른 코드
+why? 논리적으로 깔끔한 코드가 되므로
+
+
+:::::::::::::::::::::::::  깔끔한코드, css 등
+(컴포넌트의 return문에서 연산을 줄이고 helper variable을 통해 연산 마치고
+return할땐 깔끔히하기)
+(ternary 오퍼레이터 길게 여러줄 비슷한 주제로 있으면 config객체 키 이름 계산해서 갖고오고,
+객체 destructuring)
+(css 파일 js랑 똑같은 파일명으로 짓고 js에서 import해버리기)
+(SeasonDisplay js파일에서 root 컴포넌트의 className에 season-display
+이런식으로 넣어줘서 css스타일링 하기 쉬워짐)
+(UX를 위해 loader컴포넌트 따로 만들어서 로딩할때 표시하기)
+(	컴포넌트명.defaultProps = {
+     	  message : "Loading"
+	}
+이런식으로 Props의 기본값 설정가능
+)
+(return할때 helper function으로 가능한 return뒤에 최소한의 줄로 이루어지게 하기)
+
+
+::::::::::::::::::::::::: 리덕스 
+action 객체 -> 상태 변화 필요할때 발생함
+타입, 데이터..
+보통 함수로 액션 객체 타입 지정해놓고, 데이터 파라미터로 넣어서 객체 리턴시켜주는 방식으로 관리
+
+리듀서
+상태, 액션 객체 파라미터 받아서 새로운 상태 리턴
+이전상태랑 액션으로 다음상태 만드는거지
+
+스토어 
+리듀서랑 애플리케이션 상태 들어있음
+
+디스패치
+스토어 내장함수 , 액션을 발생시키는 것 dispatch(action) 액션 객체를 파라미터로 넣음
+스토어는 리듀서 함수 실행시켜서 새로운 상태 만들어줌
+
+구독
+리스너 함수를 파라미터로 넣어서 호출해주면 리스너 함수가 액션이 디스패치되어 상태가 업데이트 될 때마다
+호출
+
+
+
+redux에대해 이해가 가기 시작했음
+1. react와 redux는 별개다.
+2. redux는 데이터를 관리하는 일종의 음..  클라이언트 상의 db라고 해야되는건가? 이거는 정확히 모르겠다
+이게 csr이랑 개념이 연관있는건가? 암튼 우리가 사용할 데이터를 가지고 있는 곳이다.
+3. redux안에 reducer라는 함수가 있는데.. action을 받아온다. action은 음 요청을 원하는 고객?
+우리가 동사무소에 뭐 주소이전이나 이런거 요청할때 내는 서류 정도로 이해하면 될 것같다.
+4. reducer는 그 서류를 참고해서 중앙서버에 적힌 전국민의 데이터를 수정을 한다. 근데 이때 
+수정 내역이나 이런걸 다 알아야되니깐... 이전의 기록들을 갖고있고.. 새로운 데이터를 생성한다.
+(근데 이거 리덕스 devtools에 모든 상태 다 기록되던데 상태가 굉장히 규모가 크고 변화가 잦으면
+성능 과부하 걸리는거 아님..?)
+5. 위에서 말했듯이.. 리액트랑 리덕스는 별개인데.. 액션을 어떻게 리덕스(리듀서)에게 전해줄까? -> 
+store ( reducer랑 데이터를 동시에 갖고있는.. 동사무소) 에 내장함수로 dispatch가 있음 얘가 약간
+서류 받아주는 알바생정도로 생각. 
+(subscribe는 아직 개념을 잘 모르겠다.)
+6. redux thunk는 그럼?  
+6-1. action creator에서 fetch를 하게되면 async await을 하게 되는데.. 
+async await을 바벨로 돌려보면 switch문이 나옴
+정확한 코드는 이해 못하더라도 case문에서 request 객체를 그냥 리턴하는 경우도 있고,(이건 다시 알아보기)
+우리가 원하는 action을 리턴하는 경우도 있음
+저 request객체를 그냥 리턴하는 경우에! action이 아닌 객체라 오류발생!
+6-2. 그럼 그냥 asyn await 안쓰고 promise를 보내버리면 ? 
+reducer가 action을 보고 데이터를 처리하기전까지 요청이 완료되지 않았다면 reducer는 데이터 처리를 못함
+하지만 action을 dispatch하고 reducer가 처리하기까지의 시간이 99.9프로!! 네트워크 요청보다 빠름
+
+따라서 네트워크 요청이 있을땐(비동기 작업을 해야할땐) redux thunk를 써야한다!
+
+
+redux thunk가 실제로 하는일은..
+룰을 바꾸는 것 딱 그것뿐이다.
+action creator는 반드시 action을 return해야 한다!
+-> action creator는 action은 return할 수도 있고.. 
+함수를 리턴할수도 있다. 함수일 경우는 자동으로 실행을 시켜준다.
+
+이게 thunk가 하는 일의 전부.. 코드 14줄이니까 직접 확인해볼것
+
+
+
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
 npm init : 패지키.json 생성
 npm i react react-dom :리액트랑 리액트돔 설치
 npm i -D webpack webpack-cli: 웹팩이랑 cli 설치 -D는 개발에서만 쓰인다는 뜻
@@ -191,81 +318,3 @@ module.exports = {
 };
 
 ////////////////////////////////////////////////////////////////
-
-
-import React from 'react'
-const React = require('react)
-
-import는 es2015 modules
-require는 commonJS mudles
-
-jsx에서 css를 적용시킬때
-html : <div style="background-color:blue"> </div> 
-jsx : <div style={{backgroundColor: 'blue' }}> </div>
-bracket중 하나는 js문법을 쓰겠다는 의미이고 안쪽 하나는 객체를 나타내는 것
-
-
-const buttonText = [10, "there"];
-<button> {buttonText} </button>
-
-button에 10there이라고 나옴!
-
-
-
-redux 끄적끄적..
-
-action 객체 -> 상태 변화 필요할때 발생함
-타입, 데이터..
-보통 함수로 액션 객체 타입 지정해놓고, 데이터 파라미터로 넣어서 객체 리턴시켜주는 방식으로 관리
-
-리듀서
-상태, 액션 객체 파라미터 받아서 새로운 상태 리턴
-이전상태랑 액션으로 다음상태 만드는거지
-
-스토어 
-리듀서랑 애플리케이션 상태 들어있음
-
-디스패치
-스토어 내장함수 , 액션을 발생시키는 것 dispatch(action) 액션 객체를 파라미터로 넣음
-스토어는 리듀서 함수 실행시켜서 새로운 상태 만들어줌
-
-구독
-리스너 함수를 파라미터로 넣어서 호출해주면 리스너 함수가 액션이 디스패치되어 상태가 업데이트 될 때마다
-호출
-
-
-
-redux에대해 이해가 가기 시작했음
-1. react와 redux는 별개다.
-2. redux는 데이터를 관리하는 일종의 음..  클라이언트 상의 db라고 해야되는건가? 이거는 정확히 모르겠다
-이게 csr이랑 개념이 연관있는건가? 암튼 우리가 사용할 데이터를 가지고 있는 곳이다.
-3. redux안에 reducer라는 함수가 있는데.. action을 받아온다. action은 음 요청을 원하는 고객?
-우리가 동사무소에 뭐 주소이전이나 이런거 요청할때 내는 서류 정도로 이해하면 될 것같다.
-4. reducer는 그 서류를 참고해서 중앙서버에 적힌 전국민의 데이터를 수정을 한다. 근데 이때 
-수정 내역이나 이런걸 다 알아야되니깐... 이전의 기록들을 갖고있고.. 새로운 데이터를 생성한다.
-(근데 이거 리덕스 devtools에 모든 상태 다 기록되던데 상태가 굉장히 규모가 크고 변화가 잦으면
-성능 과부하 걸리는거 아님..?)
-5. 위에서 말했듯이.. 리액트랑 리덕스는 별개인데.. 액션을 어떻게 리덕스(리듀서)에게 전해줄까? -> 
-store ( reducer랑 데이터를 동시에 갖고있는.. 동사무소) 에 내장함수로 dispatch가 있음 얘가 약간
-서류 받아주는 알바생정도로 생각. 
-(subscribe는 아직 개념을 잘 모르겠다.)
-6. redux thunk는 그럼?  
-6-1. action creator에서 fetch를 하게되면 async await을 하게 되는데.. 
-async await을 바벨로 돌려보면 switch문이 나옴
-정확한 코드는 이해 못하더라도 case문에서 request 객체를 그냥 리턴하는 경우도 있고,(이건 다시 알아보기)
-우리가 원하는 action을 리턴하는 경우도 있음
-저 request객체를 그냥 리턴하는 경우에! action이 아닌 객체라 오류발생!
-6-2. 그럼 그냥 asyn await 안쓰고 promise를 보내버리면 ? 
-reducer가 action을 보고 데이터를 처리하기전까지 요청이 완료되지 않았다면 reducer는 데이터 처리를 못함
-하지만 action을 dispatch하고 reducer가 처리하기까지의 시간이 99.9프로!! 네트워크 요청보다 빠름
-
-따라서 네트워크 요청이 있을땐(비동기 작업을 해야할땐) redux thunk를 써야한다!
-
-
-redux thunk가 실제로 하는일은..
-룰을 바꾸는 것 딱 그것뿐이다.
-action creator는 반드시 action을 return해야 한다!
--> action creator는 action은 return할 수도 있고.. 
-함수를 리턴할수도 있다. 함수일 경우는 자동으로 실행을 시켜준다.
-
-이게 thunk가 하는 일의 전부.. 코드 14줄이니까 직접 확인해볼것
