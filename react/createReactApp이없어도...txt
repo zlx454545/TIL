@@ -63,6 +63,75 @@ return할땐 깔끔히하기)
 (return할때 helper function으로 가능한 return뒤에 최소한의 줄로 이루어지게 하기)
 
 
+
+
+
+
+<<프로젝트 pics>>
+::::::::::::::::::::::::::::::유저입력
+
+
+(src 폴더 안에 components 폴더 새로 만들어서 컴포넌트관리)
+(event handler 콜백 function 이름은 보통 on+엘리먼트이름+change)
+
+controlled vs uncontrolled
+state에 input값을 저장하지 않는다면.. html의 dom에 직접 접근했어야 한다.
+하지만 리액트에서는 이러한 일을 원하지 않음 -> 한 컴포넌트에 대한 모든 것을
+한 곳에 집중시키길 원함!!
+
+
+
+::::::::::::::::::::::::::::::api 
+props로 부모컴포넌트 내의 함수를 보내서 자식 컴포넌트에서 부모컴포넌트로 데이터보낼 수 있음
+
+(AJAX 
+axios vs fetch
+axios는 3rd 파티 라이브러리
+fetch는 빌트인 함수 모던 브라우저 
+
+fetch는 너무 low하다 웬만하면 axios 이용할것
+axios.get함수는 두개의 arg 
+1. 주소 api 문서보고 찾기
+2. 옵션 
+)
+
+(3rd party나 dependency import문은 보통 다른 jsx import문보다 위에쓰는게 좋다)
+
+axios는 따로 빼서 모듈화!!
+
+
+
+
+::::::::::::::::::::::::::::::list
+key가 필요한이유?
+리액트는 새롭게 렌더해야 되는 리스트와 실제 DOM을 비교한후
+실제 DOM에 존재하지 않는 key를 지닌 리스트 요소를 업데이트 한다.
+
+key프로퍼티는 map함수의 root element에 넣어주어야 한다.
+
+
+::::::::::::::::::::::::::::::사진 grid로 정리하기
+사진 그리드 템플릿으로 정리할 때
+리스트로 쭉 반환할 또다른 컴포넌트를 만들고
+그 컴포넌트에서 각 사진에 대해 높이를 알아내서 
+(
+how?? DOM에 직접 접근 -> document.queryselector X  대신  ref 사용!
+단 jsx내의 태그는 태그일뿐 실제 dom은 아님 => ref는 componentDidMount에 ref로 img자체에 접근하는거 충반한가?
+=> X
+why? 이미지를 다운받는데 걸리는 시간은 실제 dom생성과 차이가 있음
+따라서 addEventListener을 통해 load될때까지 기달려주어야함
+)
+grid-row-end를 각 사진마다 알맞게 값 적용
+
+
+
+
+
+
+
+
+
+
 ::::::::::::::::::::::::: 리덕스 
 action 객체 -> 상태 변화 필요할때 발생함
 타입, 데이터..
