@@ -229,9 +229,6 @@ useState를 추출했다면.. useVideos와 같이
 return은 [] 이렇게 해도 되고 그냥 일반적인 컨벤션은 {}
 )
 
-:::::::::::::::::::::::::Deployment
-
-
 
 
 ::::::::::::::::::::::::: 리덕스 
@@ -292,7 +289,59 @@ action creator는 반드시 action을 return해야 한다!
 이게 thunk가 하는 일의 전부.. 코드 14줄이니까 직접 확인해볼것
 
 
+::::::::::::::::::::::::::::::::::::::::::::::: reducer
 
+action creator는 단순히 객체를 반환하는 함수일뿐(단 type 키를 가지고 있어야함)
+reducer는 이전 상태랑 액션만 받아서 새로운 상태 반환하는 함수일뿐
+
+redux의 
+combineReducers에다가 리듀서 부서들을 각각 객체안의 인자로 집어넣고, 이 리턴값을
+createStore에다 인자로 넣어서 store을 만듦!!
+
+store에는 dispatch 함수가 있음 ( = form receiver)
+action을 인자로 넣으면
+리듀서가 자동으로 작동함
+
+store의 getState 함수로 상태를 볼 수 있음
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::: react-redux
+리액트 리덕스는 
+provider와 connect를 생성
+
+provider가 부모 컴포넌트를 감싸고
+connect가 자식 컴포넌트를 감쌈
+근데 connect는 좀 특이한게 
+context를 통해서 provider와 직접 대화를 할 수 있음
+바로 provider에게 state를 달라고함
+provider는 직접 connect에게 줄 수 있음
+이걸 자신이 감싸고 있는 컴포넌트한테 prop으로 넘겨줌
+
+또한 connect는 action creator에게서 받은 action을 
+자신이 감싸고 있는 컴포넌트한테 prop으로 넘겨줌
+
+
+::::::::::::::::::::::::::::::::::::::::::::::: 리덕스의 폴더 구조
+src
+ㄴactions : 액션 크리에이터
+ㄴcomponents 
+ㄴreducers : 리듀서 
+ㄴindex.js
+
+
+actions,reducers 폴더 안에 index.js를 만듦(by convention)
+웹팩때문이라함
+
+::::::::::::::::::::::::::::::::::::::::::::::: connect
+1. import {connect} ...
+2. connect(mapStateToProps)(컴포넌트);
+3. 
+const mapStateToProps =  state => {
+  return { songs : state.songs };
+}
+
+이렇게 되면 저 연결한 컴포넌트의 props가 mapStateToProps에서 리턴한게 됨
 
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 

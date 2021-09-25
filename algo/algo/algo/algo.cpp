@@ -17,12 +17,12 @@ int main()
 	{
 		int x, y;
 		cin >> x >> y;
-		v.push_back({ x,y });
+		v.push_back({ y,x });
 	}
 
 	sort(v.begin(), v.end());
     
 	for (auto p : v) {
-		cout << p.first << " " << p.second << "\n";
+		cout << p.second << " " << p.first << "\n";
 	}
 }
