@@ -267,26 +267,6 @@ redux에대해 이해가 가기 시작했음
 store ( reducer랑 데이터를 동시에 갖고있는.. 동사무소) 에 내장함수로 dispatch가 있음 얘가 약간
 서류 받아주는 알바생정도로 생각. 
 (subscribe는 아직 개념을 잘 모르겠다.)
-6. redux thunk는 그럼?  
-6-1. action creator에서 fetch를 하게되면 async await을 하게 되는데.. 
-async await을 바벨로 돌려보면 switch문이 나옴
-정확한 코드는 이해 못하더라도 case문에서 request 객체를 그냥 리턴하는 경우도 있고,(이건 다시 알아보기)
-우리가 원하는 action을 리턴하는 경우도 있음
-저 request객체를 그냥 리턴하는 경우에! action이 아닌 객체라 오류발생!
-6-2. 그럼 그냥 asyn await 안쓰고 promise를 보내버리면 ? 
-reducer가 action을 보고 데이터를 처리하기전까지 요청이 완료되지 않았다면 reducer는 데이터 처리를 못함
-하지만 action을 dispatch하고 reducer가 처리하기까지의 시간이 99.9프로!! 네트워크 요청보다 빠름
-
-따라서 네트워크 요청이 있을땐(비동기 작업을 해야할땐) redux thunk를 써야한다!
-
-
-redux thunk가 실제로 하는일은..
-룰을 바꾸는 것 딱 그것뿐이다.
-action creator는 반드시 action을 return해야 한다!
--> action creator는 action은 return할 수도 있고.. 
-함수를 리턴할수도 있다. 함수일 경우는 자동으로 실행을 시켜준다.
-
-이게 thunk가 하는 일의 전부.. 코드 14줄이니까 직접 확인해볼것
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::: reducer
@@ -335,13 +315,74 @@ actions,reducers 폴더 안에 index.js를 만듦(by convention)
 
 ::::::::::::::::::::::::::::::::::::::::::::::: connect
 1. import {connect} ...
-2. connect(mapStateToProps)(컴포넌트);
+
+// 액션 크리에이터를 직접 임포트해놓고 왜 직접 안쓰고 connect에 쓰는가?
+// Redux is not magic!!!
+// 액션 크리에이터는 단순히 plain object를 반환하는 함수인데
+// 리덕스는 얘가 호출될 때마다 자동적으로 반환된 액션을 리듀서에 보내지 못함
+// 리덕스 자체에서는 store에 dispatch로 직접 전달해야됨
+// connect함수가 자동적으로 dispatch를 실행시켜줌!!
+// 따라서 컴포넌트 내에선 그냥 액션 크리에이터 호출하기만해도 자동적으로 dispatch가 되는거임
+2. connect(mapStateToProps, {액션 크리에이터})(컴포넌트);
+
+// redux의 state가 바뀔때마다 새로운 state!!
+// ownProps는 해당 컴포넌트의 prop을 이 함수에서 참조할 수 있게해줌
 3. 
-const mapStateToProps =  state => {
+const mapStateToProps =  (state, ownProps) => {
   return { songs : state.songs };
 }
 
 이렇게 되면 저 연결한 컴포넌트의 props가 mapStateToProps에서 리턴한게 됨
+
+::::::::::::::::::::::::::::::::::::::::::::::: Redux thunk
+1. 컴포넌트가 스크린에 렌더됨 
+2. 컴포넌트디드마운트 메소드 호출
+3. 컴포넌트디드마운트에 액션 크리에터에서 콜
+4. 액션 크리에이터는 API 요청을 위한 코드 실행
+5. API가 데이터 줌
+6. 액션 크리에이터는 API에서 받은 데이터를 payload에 담은 action을 리턴
+7. 리듀서는 그 페이로드로 상태 업데이트함
+8. 관련있는 애들 리렌더하게함
+
+4,5,6이 리덕스 thunk가 관여하는 단계
+
+
+
+action creator에서 fetch를 하게되면 async await을 하게 되는데..  오류 발생
+why??
+async await을 바벨로 돌려보면 switch문이 나옴
+정확한 코드는 이해 못하더라도 case문에서 request 객체를 그냥 리턴하는 경우도 있고,(이건 다시 알아보기)
+우리가 원하는 action을 리턴하는 경우도 있음
+저 request객체를 그냥 리턴하는 경우에! action이 아닌 객체라 오류발생!
+
+그럼 그냥 asyn await 안쓰고 promise를 보내버리면 ? 
+당장의 오류는 안뜬다. 하지만...
+reducer가 action을 보고 데이터를 처리하기전까지 요청이 완료되지 않았다면 reducer는 데이터 처리를 못함
+하지만 action을 dispatch하고 reducer가 처리하기까지의 시간이 99.9프로!! 네트워크 요청보다 빠름
+
+asyncronous action creater 에서는 middleware가 필요하다
+
+
+redux thunk가 실제로 하는일은..
+룰을 바꾸는 것 딱 그것뿐이다.
+action creator는 반드시 action을 return해야 한다!
+-> action creator는 action은 return할 수도 있고.. 
+함수를 리턴할수도 있다. 함수일 경우는 자동으로 실행을 시켜준다.
+
+이게 thunk가 하는 일의 전부.. 코드 14줄이니까 직접 확인해볼것
+
+::::::::::::::::::::::::::::::::::::::::::::::: Rules of reducers
+1. reducer는 절대 undefined를 리턴할 수 없고, undefined를 제외한 그어떠한 값이라도 항상! 리턴해야한다
+2. reducer는 맨첨에 한번씩 실행된다. 최초의 state는 undefined, action은 미스테리한 어떤 액션이 들어가서
+값을 맨첨에 undefined로 초기화한다.
+근데 reducer의 인자에 기본 값을 설정해두면 undefined이기때문에 기본값이 들어가줌!
+그 담부터 인자로 가장 최근의 state값이 자동으로 들어가는거임
+3. pure 해야한다. 사용자의 인풋이나 네트워크 요청 값을 리턴해서는 안된다.
+4. 인자로 들어온 state를 절대 mutate하지 말아야 한다.
+(why? combineReducers코드를 직접까보면 hasChanged변수가 있는데 이걸 판별하는게 !== 이걸로 이전
+state랑 새로운 state를 비교함)
+
+
 
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
