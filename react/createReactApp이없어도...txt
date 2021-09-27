@@ -382,6 +382,36 @@ action creator는 반드시 action을 return해야 한다!
 (why? combineReducers코드를 직접까보면 hasChanged변수가 있는데 이걸 판별하는게 !== 이걸로 이전
 state랑 새로운 state를 비교함)
 
+::::::::::::::::::::::::::::::::::::::::::::::: memoize
+(네트워크 요청이 중복되지 않도록 할때...)
+lodash의 _.momoize(함수)
+
+export const fetchUser = function (id) {
+  return async function(dispatch)  {
+    const response = await jsonPlaceholder.get(`/users/${id}`);
+    dispatch({ type: "FETCH_USER", payload: response.data });
+  };
+};
+
+여기서 바깥함수에 memoize를 해도..
+안쪽 return되는 함수에 memoize를 해도..
+네트워크 요청은 중복되서 실행됨. => 꼭 이해해보기
+
+export const fetchUser = (id) => (dispatch) => {
+  _fetchUser(id, dispatch);
+};
+
+const _fetchUser = _.memoize(async (id, dispatch) => {
+  const response = await jsonPlaceholder.get(`/users/${id}`);
+
+  dispatch({ type: "FETCH_USER", payload: response.data });
+});
+
+하지만 이렇게 할 경우엔..
+같은 유저가 새로운 정보를 가졌을때 refetch는 못함 아예 memoize되어있어서
+
+then how? blog 프로젝트에서 이거 없애는 두번째 방법 찾아보기..
+매우매우 어렵다;; 근데 꼭 찾아보기 이걸로 플젝에 넣으면 지려버릴듯
 
 
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
